@@ -1,0 +1,640 @@
+CLIPConfig_medium()
+	batch_size: 48
+	beta1: 0.9
+	beta2: 0.95
+	gpu_num: 3
+	grad_clip: 1.0
+	gradient_accumulation_steps: 1
+	hidden_size: 768
+	img_hidden_size: 2048
+	img_num_head: 32
+	img_size: 336
+	learning_rate: 0.0003
+	lr_decay_iters: 9000
+	max_iters: 10000
+	min_lr: 6e-06
+	num_epoch: 12
+	num_heads: 12
+	num_layers: 12
+	res_channels: [64, 256, 512, 1024, 2048]
+	res_layers: [3, 4, 6, 3]
+	sequence_length: 25
+	spacial_dim: 11
+	vision: resnet50_v15
+	vocab_size: 32000
+	warmup_iters: 800
+	weight_decay: 0.1
+
+CLIP(
+  (image_encoder): ResNetV15(
+    (conv1): Conv_Batch_Active(
+      (block): Sequential(
+        (0): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+        (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+    )
+    (conv2): Sequential(
+      (0): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+      (1): Bottleneck(
+        (block): Sequential(
+          (0): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (1): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (2): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): Identity()
+            )
+          )
+        )
+        (shortcut): Conv_Batch_Active(
+          (block): Sequential(
+            (0): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): Identity()
+          )
+        )
+      )
+      (2): Bottleneck(
+        (block): Sequential(
+          (0): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (1): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (2): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): Identity()
+            )
+          )
+        )
+        (shortcut): Identity()
+      )
+      (3): Bottleneck(
+        (block): Sequential(
+          (0): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (1): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (2): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): Identity()
+            )
+          )
+        )
+        (shortcut): Identity()
+      )
+    )
+    (conv3): Sequential(
+      (0): Bottleneck(
+        (block): Sequential(
+          (0): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (1): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+              (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (2): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): Identity()
+            )
+          )
+        )
+        (shortcut): Conv_Batch_Active(
+          (block): Sequential(
+            (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+            (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): Identity()
+          )
+        )
+      )
+      (1): Bottleneck(
+        (block): Sequential(
+          (0): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (1): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (2): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): Identity()
+            )
+          )
+        )
+        (shortcut): Identity()
+      )
+      (2): Bottleneck(
+        (block): Sequential(
+          (0): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (1): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (2): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): Identity()
+            )
+          )
+        )
+        (shortcut): Identity()
+      )
+      (3): Bottleneck(
+        (block): Sequential(
+          (0): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (1): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (2): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): Identity()
+            )
+          )
+        )
+        (shortcut): Identity()
+      )
+    )
+    (conv4): Sequential(
+      (0): Bottleneck(
+        (block): Sequential(
+          (0): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (1): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (2): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): Identity()
+            )
+          )
+        )
+        (shortcut): Conv_Batch_Active(
+          (block): Sequential(
+            (0): Conv2d(512, 1024, kernel_size=(1, 1), stride=(2, 2), bias=False)
+            (1): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): Identity()
+          )
+        )
+      )
+      (1): Bottleneck(
+        (block): Sequential(
+          (0): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (1): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (2): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): Identity()
+            )
+          )
+        )
+        (shortcut): Identity()
+      )
+      (2): Bottleneck(
+        (block): Sequential(
+          (0): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (1): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (2): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): Identity()
+            )
+          )
+        )
+        (shortcut): Identity()
+      )
+      (3): Bottleneck(
+        (block): Sequential(
+          (0): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (1): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (2): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): Identity()
+            )
+          )
+        )
+        (shortcut): Identity()
+      )
+      (4): Bottleneck(
+        (block): Sequential(
+          (0): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (1): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (2): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): Identity()
+            )
+          )
+        )
+        (shortcut): Identity()
+      )
+      (5): Bottleneck(
+        (block): Sequential(
+          (0): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (1): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (2): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): Identity()
+            )
+          )
+        )
+        (shortcut): Identity()
+      )
+    )
+    (conv5): Sequential(
+      (0): Bottleneck(
+        (block): Sequential(
+          (0): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (1): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (2): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): Identity()
+            )
+          )
+        )
+        (shortcut): Conv_Batch_Active(
+          (block): Sequential(
+            (0): Conv2d(1024, 2048, kernel_size=(1, 1), stride=(2, 2), bias=False)
+            (1): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): Identity()
+          )
+        )
+      )
+      (1): Bottleneck(
+        (block): Sequential(
+          (0): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (1): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (2): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): Identity()
+            )
+          )
+        )
+        (shortcut): Identity()
+      )
+      (2): Bottleneck(
+        (block): Sequential(
+          (0): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (1): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+            )
+          )
+          (2): Conv_Batch_Active(
+            (block): Sequential(
+              (0): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (1): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): Identity()
+            )
+          )
+        )
+        (shortcut): Identity()
+      )
+    )
+  )
+  (img_attn): CrossAttention(
+    (q_proj): Linear(in_features=2048, out_features=2048, bias=False)
+    (k_proj): Linear(in_features=2048, out_features=2048, bias=False)
+    (v_proj): Linear(in_features=2048, out_features=2048, bias=False)
+    (o_proj): Linear(in_features=2048, out_features=768, bias=False)
+  )
+  (text_encoder): Retriever(
+    (token_embedding): Embedding(32000, 768)
+    (layers): ModuleList(
+      (0-11): 12 x DecoderLayer(
+        (ln_1): RMSNorm()
+        (attn): Attention(
+          (q_proj): Linear(in_features=768, out_features=768, bias=False)
+          (k_proj): Linear(in_features=768, out_features=768, bias=False)
+          (v_proj): Linear(in_features=768, out_features=768, bias=False)
+          (o_proj): Linear(in_features=768, out_features=768, bias=False)
+          (rotary_emb): RotaryEmbedding()
+        )
+        (ln_2): RMSNorm()
+        (mlp): MLP(
+          (gate_proj): Linear(in_features=768, out_features=2058, bias=False)
+          (up_proj): Linear(in_features=768, out_features=2058, bias=False)
+          (down_proj): Linear(in_features=2058, out_features=768, bias=False)
+        )
+      )
+    )
+    (norm): RMSNorm()
+  )
+)
+
+total_params: 148.31M, text_params: 109.81M, image_params: 23.51M, other_params: 15.00M
+total epoch: 12, sample nums: 118287, total iter_num: 9857
+step 100, loss 0.802, lr: 0.0000371, consume 124.51s
+step 200, loss 0.355, lr: 0.0000746, consume 108.00s
+step 300, loss 0.225, lr: 0.0001121, consume 110.97s
+step 400, loss 0.200, lr: 0.0001496, consume 109.39s
+step 500, loss 0.186, lr: 0.0001871, consume 109.32s
+step 600, loss 0.183, lr: 0.0002246, consume 110.97s
+step 700, loss 0.180, lr: 0.0002621, consume 110.59s
+step 800, loss 0.184, lr: 0.0002996, consume 111.03s
+    valid loss: 0.360, consume: 58.674s
+epoch: 0, consume: 976.857s
+step 900, loss 0.176, lr: 0.0002999, consume 99.58s
+step 1000, loss 0.171, lr: 0.0002996, consume 109.56s
+step 1100, loss 0.171, lr: 0.0002990, consume 111.12s
+step 1200, loss 0.160, lr: 0.0002983, consume 110.53s
+step 1300, loss 0.164, lr: 0.0002973, consume 113.85s
+step 1400, loss 0.168, lr: 0.0002961, consume 112.43s
+step 1500, loss 0.162, lr: 0.0002948, consume 111.11s
+step 1600, loss 0.154, lr: 0.0002932, consume 112.94s
+    valid loss: 0.316, consume: 60.226s
+epoch: 1, consume: 986.643s
+step 1700, loss 0.136, lr: 0.0002914, consume 80.06s
+step 1800, loss 0.134, lr: 0.0002894, consume 111.89s
+step 1900, loss 0.135, lr: 0.0002872, consume 110.41s
+step 2000, loss 0.136, lr: 0.0002848, consume 109.27s
+step 2100, loss 0.137, lr: 0.0002822, consume 111.63s
+step 2200, loss 0.136, lr: 0.0002794, consume 109.31s
+step 2300, loss 0.132, lr: 0.0002764, consume 110.30s
+step 2400, loss 0.138, lr: 0.0002733, consume 113.64s
+    valid loss: 0.285, consume: 60.490s
+epoch: 2, consume: 986.986s
+step 2500, loss 0.121, lr: 0.0002699, consume 57.44s
+step 2600, loss 0.121, lr: 0.0002664, consume 110.95s
+step 2700, loss 0.120, lr: 0.0002628, consume 110.18s
+step 2800, loss 0.121, lr: 0.0002590, consume 110.95s
+step 2900, loss 0.120, lr: 0.0002550, consume 109.67s
+step 3000, loss 0.118, lr: 0.0002508, consume 110.05s
+step 3100, loss 0.117, lr: 0.0002466, consume 111.32s
+step 3200, loss 0.119, lr: 0.0002422, consume 109.35s
+    valid loss: 0.270, consume: 59.935s
+epoch: 3, consume: 981.980s
+step 3300, loss 0.101, lr: 0.0002376, consume 30.18s
+step 3400, loss 0.103, lr: 0.0002330, consume 112.91s
+step 3500, loss 0.105, lr: 0.0002282, consume 110.86s
+step 3600, loss 0.105, lr: 0.0002233, consume 112.00s
+step 3700, loss 0.107, lr: 0.0002183, consume 110.25s
+step 3800, loss 0.102, lr: 0.0002132, consume 113.38s
+step 3900, loss 0.104, lr: 0.0002080, consume 109.63s
+step 4000, loss 0.101, lr: 0.0002027, consume 109.55s
+step 4100, loss 0.104, lr: 0.0001974, consume 110.42s
+    valid loss: 0.246, consume: 58.801s
+epoch: 4, consume: 983.157s
+step 4200, loss 0.091, lr: 0.0001920, consume 117.16s
+step 4300, loss 0.096, lr: 0.0001865, consume 111.22s
+step 4400, loss 0.088, lr: 0.0001810, consume 110.51s
+step 4500, loss 0.087, lr: 0.0001755, consume 110.48s
+step 4600, loss 0.088, lr: 0.0001699, consume 111.14s
+step 4700, loss 0.093, lr: 0.0001643, consume 110.47s
+step 4800, loss 0.090, lr: 0.0001587, consume 110.46s
+step 4900, loss 0.081, lr: 0.0001531, consume 110.32s
+    valid loss: 0.235, consume: 59.052s
+epoch: 5, consume: 977.895s
+step 5000, loss 0.085, lr: 0.0001474, consume 95.08s
+step 5100, loss 0.076, lr: 0.0001418, consume 110.17s
+step 5200, loss 0.077, lr: 0.0001362, consume 108.65s
+step 5300, loss 0.074, lr: 0.0001306, consume 110.73s
+step 5400, loss 0.078, lr: 0.0001251, consume 111.05s
+step 5500, loss 0.080, lr: 0.0001196, consume 110.30s
+step 5600, loss 0.075, lr: 0.0001141, consume 111.77s
+step 5700, loss 0.077, lr: 0.0001087, consume 109.18s
+    valid loss: 0.225, consume: 58.924s
+epoch: 6, consume: 976.635s
+step 5800, loss 0.078, lr: 0.0001034, consume 72.92s
+step 5900, loss 0.065, lr: 0.0000981, consume 109.20s
+step 6000, loss 0.070, lr: 0.0000929, consume 110.11s
+step 6100, loss 0.070, lr: 0.0000878, consume 110.91s
+step 6200, loss 0.063, lr: 0.0000828, consume 109.91s
+step 6300, loss 0.066, lr: 0.0000779, consume 109.70s
+step 6400, loss 0.066, lr: 0.0000731, consume 109.42s
+step 6500, loss 0.069, lr: 0.0000685, consume 110.11s
+    valid loss: 0.212, consume: 58.928s
+epoch: 7, consume: 974.840s
+step 6600, loss 0.062, lr: 0.0000639, consume 47.83s
+step 6700, loss 0.062, lr: 0.0000595, consume 111.30s
+step 6800, loss 0.060, lr: 0.0000552, consume 114.96s
+step 6900, loss 0.059, lr: 0.0000511, consume 113.32s
+step 7000, loss 0.060, lr: 0.0000471, consume 113.01s
+step 7100, loss 0.060, lr: 0.0000433, consume 112.29s
+step 7200, loss 0.057, lr: 0.0000396, consume 109.82s
+step 7300, loss 0.061, lr: 0.0000361, consume 109.79s
+    valid loss: 0.203, consume: 58.940s
+epoch: 8, consume: 989.581s
+step 7400, loss 0.071, lr: 0.0000328, consume 25.18s
+step 7500, loss 0.054, lr: 0.0000296, consume 110.55s
+step 7600, loss 0.060, lr: 0.0000267, consume 112.11s
+step 7700, loss 0.057, lr: 0.0000239, consume 110.49s
+step 7800, loss 0.048, lr: 0.0000213, consume 111.05s
+step 7900, loss 0.055, lr: 0.0000189, consume 111.46s
+step 8000, loss 0.055, lr: 0.0000167, consume 109.98s
+step 8100, loss 0.052, lr: 0.0000147, consume 111.15s
+step 8200, loss 0.054, lr: 0.0000129, consume 109.74s
+    valid loss: 0.196, consume: 58.775s
+epoch: 9, consume: 980.297s
+step 8300, loss 0.051, lr: 0.0000113, consume 113.59s
+step 8400, loss 0.049, lr: 0.0000099, consume 109.79s
+step 8500, loss 0.047, lr: 0.0000087, consume 110.14s
+step 8600, loss 0.051, lr: 0.0000077, consume 111.62s
+step 8700, loss 0.053, lr: 0.0000070, consume 109.94s
+step 8800, loss 0.052, lr: 0.0000064, consume 111.61s
+step 8900, loss 0.053, lr: 0.0000061, consume 109.84s
+step 9000, loss 0.050, lr: 0.0000060, consume 111.97s
+    valid loss: 0.199, consume: 62.341s
+epoch: 10, consume: 986.206s
+step 9100, loss 0.053, lr: 0.0000060, consume 93.57s
+step 9200, loss 0.054, lr: 0.0000060, consume 110.67s
+step 9300, loss 0.055, lr: 0.0000060, consume 110.51s
+step 9400, loss 0.050, lr: 0.0000060, consume 109.25s
+step 9500, loss 0.050, lr: 0.0000060, consume 109.77s
+step 9600, loss 0.049, lr: 0.0000060, consume 111.32s
+step 9700, loss 0.050, lr: 0.0000060, consume 109.34s
+step 9800, loss 0.049, lr: 0.0000060, consume 113.48s
+    valid loss: 0.190, consume: 53.557s
+epoch: 11, consume: 979.393s
